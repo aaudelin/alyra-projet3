@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title Voting contract to submit and vote for proposals
 /// @author @alyra
-/// @notice This contract is used to create a voting session for proposals that are registered in the session using a strict workflow. 
+/// @notice This contract is used to create a voting session for proposals that are registered in the session using a strict workflow.
 /// @notice The proposales are submitted by the voters. The votes tallying is computed using the highest vote count.
 /// @dev The contract is owned by the owner, who is the creator of the contract. The workflow is managed by the owner. This workflow is strict and must be followed in the right order using WorkflowStatus enum.
 contract Voting is Ownable {

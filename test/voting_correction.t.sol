@@ -17,7 +17,7 @@ contract VotingTest is Test {
     address owner = address(this);
 
     string constant DEFAULT_PROPOSAL = "Proposal 1";
-    uint constant DEFAULT_PROPOSAL_ID = 1;
+    uint256 constant DEFAULT_PROPOSAL_ID = 1;
 
     function setUp() public {
         voting = new Voting();
@@ -29,13 +29,15 @@ contract VotingTest is Test {
         _setVotingInGivenStatus(Voting.WorkflowStatus.ProposalsRegistrationEnded);
 
         vm.prank(voter1);
-        assertEq(keccak256(abi.encodePacked(voting.getOneProposal(DEFAULT_PROPOSAL_ID).description)),
-            keccak256(abi.encodePacked(DEFAULT_PROPOSAL)));
+        assertEq(
+            keccak256(abi.encodePacked(voting.getOneProposal(DEFAULT_PROPOSAL_ID).description)),
+            keccak256(abi.encodePacked(DEFAULT_PROPOSAL))
+        );
     }
 
     function test_getOneProposalWithInvalidValue() public {
         _setVotingInGivenStatus(Voting.WorkflowStatus.ProposalsRegistrationEnded);
-        
+
         vm.prank(voter1);
         vm.expectRevert();
         voting.getOneProposal(40);
@@ -130,7 +132,10 @@ contract VotingTest is Test {
         vm.startPrank(voter1);
         voting.addProposal("New proposal");
 
-        assertEq(keccak256(abi.encodePacked("New proposal")), keccak256(abi.encodePacked(voting.getOneProposal(1).description)));
+        assertEq(
+            keccak256(abi.encodePacked("New proposal")),
+            keccak256(abi.encodePacked(voting.getOneProposal(1).description))
+        );
         vm.stopPrank();
     }
 
@@ -142,7 +147,9 @@ contract VotingTest is Test {
         vm.startPrank(voter1);
         voting.addProposal(proposal);
 
-        assertEq(keccak256(abi.encodePacked(proposal)), keccak256(abi.encodePacked(voting.getOneProposal(1).description)));
+        assertEq(
+            keccak256(abi.encodePacked(proposal)), keccak256(abi.encodePacked(voting.getOneProposal(1).description))
+        );
         vm.stopPrank();
     }
 
@@ -237,7 +244,7 @@ contract VotingTest is Test {
     function test_startProposalTime() public {
         voting.startProposalsRegistering();
 
-        assertEq(uint(voting.workflowStatus()), uint(Voting.WorkflowStatus.ProposalsRegistrationStarted));
+        assertEq(uint256(voting.workflowStatus()), uint256(Voting.WorkflowStatus.ProposalsRegistrationStarted));
     }
 
     function test_startProposalTimeInWrongWorkflowStatus() public {
@@ -255,7 +262,9 @@ contract VotingTest is Test {
 
     function test_startProposalTimeEvent() public {
         vm.expectEmit();
-        emit Voting.WorkflowStatusChange(Voting.WorkflowStatus.RegisteringVoters, Voting.WorkflowStatus.ProposalsRegistrationStarted);
+        emit Voting.WorkflowStatusChange(
+            Voting.WorkflowStatus.RegisteringVoters, Voting.WorkflowStatus.ProposalsRegistrationStarted
+        );
         voting.startProposalsRegistering();
     }
 
@@ -265,7 +274,7 @@ contract VotingTest is Test {
         _setVotingInGivenStatus(Voting.WorkflowStatus.ProposalsRegistrationStarted);
         voting.endProposalsRegistering();
 
-        assertEq(uint(voting.workflowStatus()), uint(Voting.WorkflowStatus.ProposalsRegistrationEnded));
+        assertEq(uint256(voting.workflowStatus()), uint256(Voting.WorkflowStatus.ProposalsRegistrationEnded));
     }
 
     function test_endProposalTimeInWrongWorkflowStatus() public {
@@ -283,8 +292,9 @@ contract VotingTest is Test {
         _setVotingInGivenStatus(Voting.WorkflowStatus.ProposalsRegistrationStarted);
 
         vm.expectEmit();
-        emit Voting.WorkflowStatusChange(Voting.WorkflowStatus.ProposalsRegistrationStarted, 
-            Voting.WorkflowStatus.ProposalsRegistrationEnded);
+        emit Voting.WorkflowStatusChange(
+            Voting.WorkflowStatus.ProposalsRegistrationStarted, Voting.WorkflowStatus.ProposalsRegistrationEnded
+        );
         voting.endProposalsRegistering();
     }
 
@@ -294,7 +304,7 @@ contract VotingTest is Test {
         _setVotingInGivenStatus(Voting.WorkflowStatus.ProposalsRegistrationEnded);
         voting.startVotingSession();
 
-        assertEq(uint(voting.workflowStatus()), uint(Voting.WorkflowStatus.VotingSessionStarted));
+        assertEq(uint256(voting.workflowStatus()), uint256(Voting.WorkflowStatus.VotingSessionStarted));
     }
 
     function test_startVotingSessionInWrongWorkflowStatus() public {
@@ -312,7 +322,9 @@ contract VotingTest is Test {
         _setVotingInGivenStatus(Voting.WorkflowStatus.ProposalsRegistrationEnded);
 
         vm.expectEmit();
-        emit Voting.WorkflowStatusChange(Voting.WorkflowStatus.ProposalsRegistrationEnded, Voting.WorkflowStatus.VotingSessionStarted);
+        emit Voting.WorkflowStatusChange(
+            Voting.WorkflowStatus.ProposalsRegistrationEnded, Voting.WorkflowStatus.VotingSessionStarted
+        );
         voting.startVotingSession();
     }
 
@@ -322,7 +334,7 @@ contract VotingTest is Test {
         _setVotingInGivenStatus(Voting.WorkflowStatus.VotingSessionStarted);
         voting.endVotingSession();
 
-        assertEq(uint(voting.workflowStatus()), uint(Voting.WorkflowStatus.VotingSessionEnded));
+        assertEq(uint256(voting.workflowStatus()), uint256(Voting.WorkflowStatus.VotingSessionEnded));
     }
 
     function test_endVotingSessionInWrongWorkflowStatus() public {
@@ -339,7 +351,9 @@ contract VotingTest is Test {
     function test_endVotingSessionEvent() public {
         _setVotingInGivenStatus(Voting.WorkflowStatus.VotingSessionStarted);
         vm.expectEmit();
-        emit Voting.WorkflowStatusChange(Voting.WorkflowStatus.VotingSessionStarted, Voting.WorkflowStatus.VotingSessionEnded);
+        emit Voting.WorkflowStatusChange(
+            Voting.WorkflowStatus.VotingSessionStarted, Voting.WorkflowStatus.VotingSessionEnded
+        );
         voting.endVotingSession();
     }
 
@@ -394,7 +408,6 @@ contract VotingTest is Test {
 
         vm.expectRevert("No proposal has been voted for");
         voting.tallyVotes();
-
     }
 
     function test_tallyVotesWithoutBeingOwner() public {
@@ -436,19 +449,19 @@ contract VotingTest is Test {
      *  I can use here a if (value >= ), because higher step means that it will also validate all previous if
      */
     function _setVotingInGivenStatus(Voting.WorkflowStatus ws) internal {
-        if (uint(ws) >= uint(Voting.WorkflowStatus.ProposalsRegistrationStarted)) {
+        if (uint256(ws) >= uint256(Voting.WorkflowStatus.ProposalsRegistrationStarted)) {
             _setVotingToStartProposal();
         }
-        if (uint(ws) >= uint(Voting.WorkflowStatus.ProposalsRegistrationEnded)) {
+        if (uint256(ws) >= uint256(Voting.WorkflowStatus.ProposalsRegistrationEnded)) {
             _setVotingFromStartProposalToEndProposal();
-        } 
-        if (uint(ws) >= uint(Voting.WorkflowStatus.VotingSessionStarted)) {
+        }
+        if (uint256(ws) >= uint256(Voting.WorkflowStatus.VotingSessionStarted)) {
             voting.startVotingSession();
-        } 
-        if (uint(ws) >= uint(Voting.WorkflowStatus.VotingSessionEnded)) {
+        }
+        if (uint256(ws) >= uint256(Voting.WorkflowStatus.VotingSessionEnded)) {
             _setVotingFromStartVotingToEndVoting();
-        } 
-        if (uint(ws) >= uint(Voting.WorkflowStatus.VotesTallied)) {
+        }
+        if (uint256(ws) >= uint256(Voting.WorkflowStatus.VotesTallied)) {
             voting.tallyVotes();
         }
     }
