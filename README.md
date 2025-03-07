@@ -2,7 +2,7 @@
 
 ## Setup
 ```bash
-
+git submodule update --init
 ```
 
 ## Local
