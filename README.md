@@ -1,5 +1,11 @@
 # Project 3
 
+## Rendus projet
+1. Déploiement SC Sepolia : [0xce1dB80Cd70c630DCb96F287443e6e6585839805](https://sepolia.etherscan.io/address/0xce1dB80Cd70c630DCb96F287443e6e6585839805)
+2. Déploiement Vercel Front: [Vercel](https://alyra-projet3-4ictil86p-aaudelins-projects.vercel.app/)
+3. Vidéo fonctionnalités
+
+
 ## Setup
 ```bash
 forge build
