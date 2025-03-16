@@ -2,7 +2,12 @@ import { Button } from "@/components/ui/button";
 import { contract } from "@/app/contract";
 import { useWriteContract, useAccount } from 'wagmi'
 
-const NextStep = ({ owner, workflowStatus }) => {
+interface NextStepProps {
+  owner: `0x${string}` | undefined;
+  workflowStatus: bigint | undefined;
+}
+
+const NextStep = ({ owner, workflowStatus }: NextStepProps) => {
 
     const WorkflowStatusActions: Record<string, string> = {
         "0": "startProposalsRegistering",
@@ -12,7 +17,7 @@ const NextStep = ({ owner, workflowStatus }) => {
         "4": "tallyVotes",
       };
 
-    const { data: hash, isPending, writeContract } = useWriteContract();
+    const { writeContract } = useWriteContract();
     const { address, isConnected } = useAccount();
 
     const handleNextStatus = () => {

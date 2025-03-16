@@ -2,10 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { contract } from "@/app/contract";
 import { useWriteContract } from 'wagmi'
+import { Voter } from "./Bank";
 
-const Vote = ({ voter, workflowStatus }) => {
+interface VoteProps {
+  voter: Voter | undefined;
+  workflowStatus: bigint | undefined;
+}
 
-    const { data: hash, isPending, writeContract } = useWriteContract();
+const Vote = ({ voter, workflowStatus }: VoteProps) => {
+
+    const { writeContract } = useWriteContract();
 
     const handleSubmitVote = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

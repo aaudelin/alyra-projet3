@@ -1,4 +1,10 @@
-const ContractInfos = ({ workflowStatus, owner }) => {
+
+interface ContractInfosProps {
+  workflowStatus: string;
+  owner: `0x${string}` | undefined;
+}
+
+const ContractInfos = ({ workflowStatus, owner }: ContractInfosProps) => {
   return (
     <>
     {workflowStatus && (

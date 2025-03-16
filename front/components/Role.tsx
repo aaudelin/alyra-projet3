@@ -1,5 +1,10 @@
 
-const Role = ({ isConnected, labelVoter }) => {
+interface RoleProps {
+  isConnected: boolean;
+  labelVoter: string;
+}
+
+const Role = ({ isConnected, labelVoter }: RoleProps) => {
   return (
     <>
     {isConnected ? (

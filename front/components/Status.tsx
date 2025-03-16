@@ -1,4 +1,12 @@
-const Status = ({ voter, winner, workflowStatus }) => {
+import { Voter } from "./Bank";
+
+interface StatusProps {
+  voter: Voter | undefined;
+  winner: bigint | undefined;
+  workflowStatus: bigint | undefined;
+}
+
+const Status = ({ voter, winner, workflowStatus }: StatusProps) => {
 
     return (
       <>

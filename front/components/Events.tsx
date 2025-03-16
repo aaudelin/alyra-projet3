@@ -1,8 +1,11 @@
 
 import { useAccount } from 'wagmi'
-import { formatEther } from 'viem'
+import { Proposal } from './Bank';
+interface EventsProps {
+  proposals: Proposal[];
+}
 
-const Events = ({ proposals } ) => {
+const Events = ({ proposals }: EventsProps) => {
 
   const { isConnected } = useAccount();
 
@@ -20,11 +23,11 @@ const Events = ({ proposals } ) => {
                     <div className="flex items-center text-yellow-500 justify-between mb-2">
                             {proposal.description}
                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                            {new Date(proposal.description).toLocaleString()}
+                            ID: {proposal.id?.toString()}
                         </span>
                     </div>
                     <p className="font-bold text-lg text-gray-900 dark:text-white">
-                        {proposal.voteCount} Votes
+                        {proposal.voteCount.toString()} Votes
                     </p>
                 </div>)
           })}
